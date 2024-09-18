@@ -1,3 +1,6 @@
+#Track.gd
+#Handles Car instantiation
+
 extends Node2D
 
 var cars = []

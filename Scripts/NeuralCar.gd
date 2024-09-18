@@ -1,3 +1,6 @@
+#NeuralCar.gd
+#Computes Actions for each instantiated car, containing the neural network
+
 extends KinematicBody2D
 
 var acceleration = 5

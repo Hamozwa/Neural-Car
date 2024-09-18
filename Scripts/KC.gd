@@ -1,3 +1,7 @@
+#KC.gd
+#Legacy name, runs the whole generation system and genetic algorithm
+#also coordinates between all other scripts as an overaall script
+
 extends Node
 
 var gensize = 500
