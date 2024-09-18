@@ -3,13 +3,14 @@ extends Node2D
 var cars = []
 
 
-func spawn_neural_cars(generation):
-	for i in range(0,len(generation)):
-		var car = load("res://NeuralCar.tscn").instance()
-		car.position=Vector2(320,100)
-		car.weights_and_biases = generation[i]
-		add_child(car)
-		yield(get_tree(), "physics_frame")
+func spawn_neural_cars(generation, batch_size):
+	for i in range(0,len(generation),batch_size):
+		for j in range(0,batch_size):
+			var car = load("res://NeuralCar.tscn").instance()
+			car.position=Vector2(320,100)
+			car.weights_and_biases = generation[i+j]
+			add_child(car)
+			yield(get_tree(), "physics_frame")
 	
 func add_car(inst):
 	for item in cars:

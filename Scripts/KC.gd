@@ -67,7 +67,7 @@ func generation_complete():
 #most_fit = [ [fitness1, neuralinfo1], ... ]
 
 func spawn_generation(gen):
-	emit_signal("spawn_cars",gen)
+	emit_signal("spawn_cars",gen,batchsize)
 
 func _ready():
 	yield(Track, "ready")

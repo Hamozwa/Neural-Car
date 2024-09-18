@@ -10,6 +10,7 @@ var direction = 0
 var velocity = Vector2.ZERO
 var vellen = 1
 
+#leftover from original simple game creation
 func get_input():
 	direction = 0
 	speed_input = 0
