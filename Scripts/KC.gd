@@ -22,6 +22,7 @@ var rng = RandomNumberGenerator.new()
 signal GenLabel(message)
 signal spawn_cars(car_info)
 signal add_to_car_list(car)
+signal next_batch()
 onready var Track = get_tree().get_root().find_node("Track",true,false)
 
 class MyCustomSorter:
@@ -39,11 +40,13 @@ func last_breath(fitness, neuralinfo):
 	if len(generation) == gensize:
 		generation_complete()
 		generation = []
+		batch_counter = 0 #ensures batch_counter doesnt carry over generations
 	
 	#Checks if batch complete, starting next batch
 	batch_counter += 1
-	if len(generation) == 50:
-		pass
+	if batch_counter == 50:
+		emit_signal("next_batch")
+		batch_counter = 0
 	
 #neuralinfo = [ [layer1], [layer2] ]
 #layer1 = [ [weights], [biases] ]

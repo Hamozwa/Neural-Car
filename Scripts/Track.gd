@@ -4,19 +4,35 @@
 extends Node2D
 
 var cars = []
+var held_generation = []
+var held_batch_size = 0
+var current_batch = 0
+var car_address = 0
 
 #Called when current batch is complete
 func detect_next_batch():
-	print("batch!")
+	for i in range(0,held_batch_size):
+		car_address = (50*current_batch) + i
+		spawn_car(held_generation[car_address])
+	print("batch done")
 
+#Spawns a single car - used for easy reading of code
+func spawn_car(neural_info):
+	var car = load("res://NeuralCar.tscn").instance()
+	car.position=Vector2(320,100)
+	car.weights_and_biases = neural_info
+	add_child(car)
+	yield(get_tree(), "physics_frame")
+
+#Called when next generation is born
 func spawn_neural_cars(generation, batch_size):
-	for i in range(0,len(generation),batch_size):
-		for j in range(0,batch_size):
-			var car = load("res://NeuralCar.tscn").instance()
-			car.position=Vector2(320,100)
-			car.weights_and_biases = generation[i+j]
-			add_child(car)
-			yield(get_tree(), "physics_frame")
+	#Extracts information from signal to script
+	held_batch_size = batch_size
+	held_generation = generation
+	
+	#Starts first batch
+	current_batch = 0
+	detect_next_batch()
 	
 func add_car(inst):
 	for item in cars:
