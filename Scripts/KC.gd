@@ -14,6 +14,7 @@ var weight_start_deviation: float = 1.0
 var bias_start_mean: float = 0.0
 var bias_start_deviation: float = 1.0
 
+var batch_counter = 0
 var gennumber = 1
 var generation = []
 var most_fit = []
@@ -29,17 +30,27 @@ class MyCustomSorter:
 			return true
 		return false
 
+#Called when a car dies
 func last_breath(fitness, neuralinfo):
+	#Appends car to list of fitness
 	generation.append([fitness, neuralinfo])
+	
+	#Starts next generation at end of current one
 	if len(generation) == gensize:
 		generation_complete()
 		generation = []
+	
+	#Checks if batch complete, starting next batch
+	batch_counter += 1
+	if len(generation) == 50:
+		pass
 	
 #neuralinfo = [ [layer1], [layer2] ]
 #layer1 = [ [weights], [biases] ]
 #weights = [ [neuron1weights], [neuron2weights], ... ]
 #most_fit = [ [fitness1, neuralinfo1], ... ]
-	
+
+#Starts next generation
 func generation_complete():
 	generation.sort_custom(MyCustomSorter, "sort_ascending")
 	most_fit = generation.slice((-1*parent_number),-1)

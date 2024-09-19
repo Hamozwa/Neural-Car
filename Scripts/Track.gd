@@ -5,6 +5,9 @@ extends Node2D
 
 var cars = []
 
+#Called when current batch is complete
+func detect_next_batch():
+	print("batch!")
 
 func spawn_neural_cars(generation, batch_size):
 	for i in range(0,len(generation),batch_size):
@@ -23,7 +26,7 @@ func add_car(inst):
 func _ready():
 	KC.connect("spawn_cars",self,"spawn_neural_cars")
 	KC.connect("add_to_car_list",self,"add_car")
-
+	KC.connect("next_batch",self,"detect_next_batch")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _physics_process(delta):
