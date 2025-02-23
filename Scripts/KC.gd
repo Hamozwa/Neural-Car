@@ -14,6 +14,7 @@ var weight_start_deviation: float = 1.0
 var bias_start_mean: float = 0.0
 var bias_start_deviation: float = 1.0
 
+var batch_number = 1
 var batch_counter = 0
 var gennumber = 1
 var generation = []
@@ -41,11 +42,14 @@ func last_breath(fitness, neuralinfo):
 		generation_complete()
 		generation = []
 		batch_counter = 0 #ensures batch_counter doesnt carry over generations
+		batch_number = 1
 	
 	#Checks if batch complete, starting next batch
 	batch_counter += 1
-	if batch_counter == 50:
+	if batch_counter == batchsize:
 		emit_signal("next_batch")
+		batch_number += 1
+		emit_signal("GenLabel","Generation: "+str(gennumber)+", Batch: "+str(batch_number))
 		batch_counter = 0
 	
 #neuralinfo = [ [layer1], [layer2] ]
@@ -75,7 +79,7 @@ func generation_complete():
 				bias = bias * multiplier
 		generation.append(currentinfo)
 	gennumber += 1
-	emit_signal("GenLabel","Generation: "+str(gennumber))
+	emit_signal("GenLabel","Generation: "+str(gennumber)+", Batch: 1")
 	spawn_generation(generation)
 		
 
