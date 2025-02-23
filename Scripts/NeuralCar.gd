@@ -131,10 +131,23 @@ func neuralprocess(neuralinput,neuralinfo):
 	var hidden = neuronlayer(neuralinput,neuralinfo[0][0],neuralinfo[0][1],6)
 	return neuronlayer(hidden, neuralinfo[1][0],neuralinfo[1][1],4)
 
+func regularise(neuralinfo):
+	var output = 0
+	for layer in neuralinfo:
+		var weights = layer[0]
+		var biases = layer[1]
+		for weight in weights:
+			for neuron in weight:
+				output += neuron * neuron
+		for bias in biases:
+			output += bias * bias
+	return output
+
 func death():
-	var time_elapsed = OS.get_unix_time() - start_time + 1
-#	var fitness = cpreached/float(time_elapsed)
-	get_node("/root/KC").last_breath(cpreached, weights_and_biases)
+	var time_elapsed = OS.get_unix_time() - start_time
+	var regularisation = regularise(weights_and_biases)
+	var fitness = cpreached - sigmoid_function(regularisation)
+	get_node("/root/KC").last_breath(fitness, weights_and_biases)
 	queue_free()
 	
 
